@@ -29,7 +29,12 @@ interface Stats {
     platform: string;
     created_at: string;
   }>;
-  topSelling: Array<{ id: number; description: string; category: string; total_sold: number }>;
+  topSelling: Array<{
+    id: number;
+    description: string;
+    category: string;
+    total_sold: number;
+  }>;
 }
 
 type View = "home" | "products" | "sales";
@@ -131,7 +136,9 @@ export default function DashboardPage() {
   };
 
   const handleSaveProduct = async (productData: ProductInput) => {
-    const url = editingProduct ? `/api/products/${editingProduct.id}` : "/api/products";
+    const url = editingProduct
+      ? `/api/products/${editingProduct.id}`
+      : "/api/products";
     const method = editingProduct ? "PUT" : "POST";
 
     const res = await fetch(url, {
@@ -149,7 +156,11 @@ export default function DashboardPage() {
     setEditingProduct(null);
   };
 
-  const handleSale = async (productId: number, quantity: number, platform: string) => {
+  const handleSale = async (
+    productId: number,
+    quantity: number,
+    platform: string,
+  ) => {
     const res = await fetch("/api/sales", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -162,7 +173,11 @@ export default function DashboardPage() {
     fetchStats();
   };
 
-  const handleStockUpdate = async (productId: number, adjustment: number, type: "add" | "remove" | "set") => {
+  const handleStockUpdate = async (
+    productId: number,
+    adjustment: number,
+    type: "add" | "remove" | "set",
+  ) => {
     const res = await fetch(`/api/products/${productId}/stock`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -180,7 +195,9 @@ export default function DashboardPage() {
     setDeleteLoading(true);
 
     try {
-      const res = await fetch(`/api/products/${deletingProduct.id}`, { method: "DELETE" });
+      const res = await fetch(`/api/products/${deletingProduct.id}`, {
+        method: "DELETE",
+      });
       if (!res.ok) throw new Error("Failed to delete");
 
       fetchProducts();
@@ -204,35 +221,66 @@ export default function DashboardPage() {
   const renderHome = () => (
     <div style={{ padding: "20px", maxWidth: 1200, margin: "0 auto" }}>
       {/* Stats Grid */}
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
-        gap: 16,
-        marginBottom: 32
-      }}>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
+          gap: 16,
+          marginBottom: 32,
+        }}
+      >
         <div className="stat-card">
-          <div className="icon" style={{ background: "var(--primary-light)", color: "var(--primary)" }}>
+          <div
+            className="icon"
+            style={{
+              background: "var(--primary-light)",
+              color: "var(--primary)",
+            }}
+          >
             {Icons.box}
           </div>
           <div className="value">{stats?.products?.total_products || 0}</div>
           <div className="label">Total Products</div>
         </div>
         <div className="stat-card">
-          <div className="icon" style={{ background: "var(--success-light)", color: "var(--success)" }}>
+          <div
+            className="icon"
+            style={{
+              background: "var(--success-light)",
+              color: "var(--success)",
+            }}
+          >
             {Icons.package}
           </div>
-          <div className="value">{stats?.products?.total_items?.toLocaleString() || 0}</div>
+          <div className="value">
+            {stats?.products?.total_items?.toLocaleString() || 0}
+          </div>
           <div className="label">Items in Stock</div>
         </div>
         <div className="stat-card">
-          <div className="icon" style={{ background: "var(--warning-light)", color: "var(--warning)" }}>
+          <div
+            className="icon"
+            style={{
+              background: "var(--warning-light)",
+              color: "var(--warning)",
+            }}
+          >
             {Icons.dollar}
           </div>
-          <div className="value">Rs. {Math.round(stats?.products?.inventory_value || 0).toLocaleString()}</div>
+          <div className="value">
+            Rs.{" "}
+            {Math.round(stats?.products?.inventory_value || 0).toLocaleString()}
+          </div>
           <div className="label">Inventory Value</div>
         </div>
         <div className="stat-card">
-          <div className="icon" style={{ background: "var(--danger-light)", color: "var(--danger)" }}>
+          <div
+            className="icon"
+            style={{
+              background: "var(--danger-light)",
+              color: "var(--danger)",
+            }}
+          >
             {Icons.alertCircle}
           </div>
           <div className="value">{stats?.products?.low_stock_count || 0}</div>
@@ -242,15 +290,43 @@ export default function DashboardPage() {
 
       {/* Today's Performance */}
       <div style={{ marginBottom: 32 }}>
-        <h2 style={{ fontSize: 18, fontWeight: 600, marginBottom: 16 }}>Today&apos;s Performance</h2>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 16 }}>
-          <div className="card" style={{ background: "linear-gradient(135deg, var(--primary) 0%, #8b5cf6 100%)", color: "white", border: "none" }}>
+        <h2 style={{ fontSize: 18, fontWeight: 600, marginBottom: 16 }}>
+          Today&apos;s Performance
+        </h2>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+            gap: 16,
+          }}
+        >
+          <div
+            className="card"
+            style={{
+              background:
+                "linear-gradient(135deg, var(--primary) 0%, #8b5cf6 100%)",
+              color: "white",
+              border: "none",
+            }}
+          >
             <p style={{ opacity: 0.9, marginBottom: 8 }}>Items Sold Today</p>
-            <p style={{ fontSize: 32, fontWeight: 700 }}>{stats?.today?.items_sold || 0}</p>
+            <p style={{ fontSize: 32, fontWeight: 700 }}>
+              {stats?.today?.items_sold || 0}
+            </p>
           </div>
-          <div className="card" style={{ background: "linear-gradient(135deg, var(--success) 0%, #059669 100%)", color: "white", border: "none" }}>
+          <div
+            className="card"
+            style={{
+              background:
+                "linear-gradient(135deg, var(--success) 0%, #059669 100%)",
+              color: "white",
+              border: "none",
+            }}
+          >
             <p style={{ opacity: 0.9, marginBottom: 8 }}>Revenue Today</p>
-            <p style={{ fontSize: 32, fontWeight: 700 }}>Rs. {Math.round(stats?.today?.revenue || 0).toLocaleString()}</p>
+            <p style={{ fontSize: 32, fontWeight: 700 }}>
+              Rs. {Math.round(stats?.today?.revenue || 0).toLocaleString()}
+            </p>
           </div>
         </div>
       </div>
@@ -258,7 +334,16 @@ export default function DashboardPage() {
       {/* Low Stock Alert */}
       {stats?.lowStock && stats.lowStock.length > 0 && (
         <div style={{ marginBottom: 32 }}>
-          <h2 style={{ fontSize: 18, fontWeight: 600, marginBottom: 16, display: "flex", alignItems: "center", gap: 8 }}>
+          <h2
+            style={{
+              fontSize: 18,
+              fontWeight: 600,
+              marginBottom: 16,
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+            }}
+          >
             <span style={{ color: "var(--warning)" }}>{Icons.warning}</span>
             Low Stock Alert
           </h2>
@@ -272,16 +357,20 @@ export default function DashboardPage() {
                   alignItems: "center",
                   justifyContent: "space-between",
                   padding: "16px 20px",
-                  cursor: "pointer"
+                  cursor: "pointer",
                 }}
                 onClick={() => setStockProduct(product as Product)}
               >
                 <div>
                   <p style={{ fontWeight: 500 }}>{product.description}</p>
-                  <p style={{ fontSize: 13, color: "var(--muted)" }}>{product.category}</p>
+                  <p style={{ fontSize: 13, color: "var(--muted)" }}>
+                    {product.category}
+                  </p>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                  <span className={`badge ${product.quantity_in_hand === 0 ? "badge-danger" : "badge-warning"}`}>
+                  <span
+                    className={`badge ${product.quantity_in_hand === 0 ? "badge-danger" : "badge-warning"}`}
+                  >
                     {product.quantity_in_hand} left
                   </span>
                   <button className="btn btn-secondary btn-sm">Restock</button>
@@ -295,7 +384,16 @@ export default function DashboardPage() {
       {/* Recent Sales */}
       {stats?.recentSales && stats.recentSales.length > 0 && (
         <div>
-          <h2 style={{ fontSize: 18, fontWeight: 600, marginBottom: 16, display: "flex", alignItems: "center", gap: 8 }}>
+          <h2
+            style={{
+              fontSize: 18,
+              fontWeight: 600,
+              marginBottom: 16,
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+            }}
+          >
             {Icons.clock}
             Recent Sales
           </h2>
@@ -308,7 +406,10 @@ export default function DashboardPage() {
                   alignItems: "center",
                   justifyContent: "space-between",
                   padding: "16px 20px",
-                  borderBottom: i < stats.recentSales.length - 1 ? "1px solid var(--border)" : "none"
+                  borderBottom:
+                    i < stats.recentSales.length - 1
+                      ? "1px solid var(--border)"
+                      : "none",
                 }}
               >
                 <div>
@@ -342,7 +443,14 @@ export default function DashboardPage() {
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
-        <div style={{ display: "flex", gap: 8, overflowX: "auto", paddingBottom: 8 }}>
+        <div
+          style={{
+            display: "flex",
+            gap: 8,
+            overflowX: "auto",
+            paddingBottom: 8,
+          }}
+        >
           <button
             className={`chip ${selectedCategory === "" ? "active" : ""}`}
             onClick={() => setSelectedCategory("")}
@@ -373,11 +481,13 @@ export default function DashboardPage() {
           <p>Try adjusting your search or filters</p>
         </div>
       ) : (
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-          gap: 16
-        }}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+            gap: 16,
+          }}
+        >
           {products.map((product) => {
             const status = getStockStatus(product.quantity_in_hand);
             return (
@@ -385,33 +495,68 @@ export default function DashboardPage() {
                 key={product.id}
                 className={`product-card ${product.quantity_in_hand === 0 ? "out-of-stock" : product.quantity_in_hand < 10 ? "low-stock" : ""}`}
               >
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "start" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "start",
+                  }}
+                >
                   <div style={{ flex: 1 }}>
-                    <span className="badge badge-muted" style={{ marginBottom: 8 }}>
+                    <span
+                      className="badge badge-muted"
+                      style={{ marginBottom: 8 }}
+                    >
                       {product.category}
                     </span>
-                    <h3 style={{ fontWeight: 600, fontSize: 15, lineHeight: 1.4 }}>
+                    <h3
+                      style={{ fontWeight: 600, fontSize: 15, lineHeight: 1.4 }}
+                    >
                       {product.description}
                     </h3>
                   </div>
-                  <span className={`badge ${status.class}`}>{status.label}</span>
+                  <span className={`badge ${status.class}`}>
+                    {status.label}
+                  </span>
                 </div>
 
-                <div style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: 12,
-                  padding: "12px 0",
-                  borderTop: "1px solid var(--border)",
-                  borderBottom: "1px solid var(--border)"
-                }}>
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr",
+                    gap: 12,
+                    padding: "12px 0",
+                    borderTop: "1px solid var(--border)",
+                    borderBottom: "1px solid var(--border)",
+                  }}
+                >
                   <div>
-                    <p style={{ fontSize: 12, color: "var(--muted)", marginBottom: 2 }}>Stock</p>
-                    <p style={{ fontSize: 18, fontWeight: 700 }}>{product.quantity_in_hand}</p>
+                    <p
+                      style={{
+                        fontSize: 12,
+                        color: "var(--muted)",
+                        marginBottom: 2,
+                      }}
+                    >
+                      Stock
+                    </p>
+                    <p style={{ fontSize: 18, fontWeight: 700 }}>
+                      {product.quantity_in_hand}
+                    </p>
                   </div>
                   <div>
-                    <p style={{ fontSize: 12, color: "var(--muted)", marginBottom: 2 }}>Price</p>
-                    <p style={{ fontSize: 18, fontWeight: 700 }}>Rs. {product.selling_price}</p>
+                    <p
+                      style={{
+                        fontSize: 12,
+                        color: "var(--muted)",
+                        marginBottom: 2,
+                      }}
+                    >
+                      Price
+                    </p>
+                    <p style={{ fontSize: 18, fontWeight: 700 }}>
+                      Rs. {product.selling_price}
+                    </p>
                   </div>
                 </div>
 
@@ -465,20 +610,42 @@ export default function DashboardPage() {
     <div style={{ padding: "20px", maxWidth: 1200, margin: "0 auto" }}>
       {/* Weekly Stats */}
       <div style={{ marginBottom: 32 }}>
-        <h2 style={{ fontSize: 18, fontWeight: 600, marginBottom: 16 }}>This Week</h2>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 16 }}>
+        <h2 style={{ fontSize: 18, fontWeight: 600, marginBottom: 16 }}>
+          This Week
+        </h2>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+            gap: 16,
+          }}
+        >
           <div className="stat-card">
-            <div className="icon" style={{ background: "var(--primary-light)", color: "var(--primary)" }}>
+            <div
+              className="icon"
+              style={{
+                background: "var(--primary-light)",
+                color: "var(--primary)",
+              }}
+            >
               {Icons.shoppingBag}
             </div>
             <div className="value">{stats?.week?.items_sold || 0}</div>
             <div className="label">Items Sold</div>
           </div>
           <div className="stat-card">
-            <div className="icon" style={{ background: "var(--success-light)", color: "var(--success)" }}>
+            <div
+              className="icon"
+              style={{
+                background: "var(--success-light)",
+                color: "var(--success)",
+              }}
+            >
               {Icons.trending}
             </div>
-            <div className="value">Rs. {Math.round(stats?.week?.revenue || 0).toLocaleString()}</div>
+            <div className="value">
+              Rs. {Math.round(stats?.week?.revenue || 0).toLocaleString()}
+            </div>
             <div className="label">Revenue</div>
           </div>
         </div>
@@ -487,7 +654,9 @@ export default function DashboardPage() {
       {/* Top Selling */}
       {stats?.topSelling && stats.topSelling.length > 0 && (
         <div style={{ marginBottom: 32 }}>
-          <h2 style={{ fontSize: 18, fontWeight: 600, marginBottom: 16 }}>Top Selling Products</h2>
+          <h2 style={{ fontSize: 18, fontWeight: 600, marginBottom: 16 }}>
+            Top Selling Products
+          </h2>
           <div className="card" style={{ padding: 0, overflow: "hidden" }}>
             {stats.topSelling.map((product, i) => (
               <div
@@ -497,30 +666,40 @@ export default function DashboardPage() {
                   alignItems: "center",
                   justifyContent: "space-between",
                   padding: "16px 20px",
-                  borderBottom: i < stats.topSelling.length - 1 ? "1px solid var(--border)" : "none"
+                  borderBottom:
+                    i < stats.topSelling.length - 1
+                      ? "1px solid var(--border)"
+                      : "none",
                 }}
               >
                 <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-                  <span style={{
-                    width: 32,
-                    height: 32,
-                    borderRadius: 8,
-                    background: i === 0 ? "var(--warning)" : "var(--muted-light)",
-                    color: i === 0 ? "white" : "var(--muted)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontWeight: 700,
-                    fontSize: 14
-                  }}>
+                  <span
+                    style={{
+                      width: 32,
+                      height: 32,
+                      borderRadius: 8,
+                      background:
+                        i === 0 ? "var(--warning)" : "var(--muted-light)",
+                      color: i === 0 ? "white" : "var(--muted)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontWeight: 700,
+                      fontSize: 14,
+                    }}
+                  >
                     {i + 1}
                   </span>
                   <div>
                     <p style={{ fontWeight: 500 }}>{product.description}</p>
-                    <p style={{ fontSize: 13, color: "var(--muted)" }}>{product.category}</p>
+                    <p style={{ fontSize: 13, color: "var(--muted)" }}>
+                      {product.category}
+                    </p>
                   </div>
                 </div>
-                <span className="badge badge-success">{product.total_sold} sold</span>
+                <span className="badge badge-success text-nowrap">
+                  {product.total_sold} sold
+                </span>
               </div>
             ))}
           </div>
@@ -529,7 +708,9 @@ export default function DashboardPage() {
 
       {/* Recent Sales */}
       <div>
-        <h2 style={{ fontSize: 18, fontWeight: 600, marginBottom: 16 }}>Recent Sales</h2>
+        <h2 style={{ fontSize: 18, fontWeight: 600, marginBottom: 16 }}>
+          Recent Sales
+        </h2>
         {stats?.recentSales && stats.recentSales.length > 0 ? (
           <div className="card" style={{ padding: 0, overflow: "hidden" }}>
             {stats.recentSales.map((sale, i) => (
@@ -540,16 +721,23 @@ export default function DashboardPage() {
                   alignItems: "center",
                   justifyContent: "space-between",
                   padding: "16px 20px",
-                  borderBottom: i < stats.recentSales.length - 1 ? "1px solid var(--border)" : "none"
+                  borderBottom:
+                    i < stats.recentSales.length - 1
+                      ? "1px solid var(--border)"
+                      : "none",
                 }}
               >
                 <div>
                   <p style={{ fontWeight: 500 }}>{sale.product_name}</p>
                   <p style={{ fontSize: 13, color: "var(--muted)" }}>
-                    {sale.quantity}x via {sale.platform} • {new Date(sale.created_at).toLocaleDateString()}
+                    {sale.quantity}x via {sale.platform} •{" "}
+                    {new Date(sale.created_at).toLocaleDateString()}
                   </p>
                 </div>
-                <span style={{ fontWeight: 600, color: "var(--success)" }}>
+                <span
+                  style={{ fontWeight: 600, color: "var(--success)" }}
+                  className="text-nowrap"
+                >
                   Rs. {Math.round(sale.total_price).toLocaleString()}
                 </span>
               </div>
@@ -569,21 +757,25 @@ export default function DashboardPage() {
   return (
     <div style={{ minHeight: "100vh", paddingBottom: 80 }}>
       {/* Header */}
-      <header style={{
-        background: "var(--card)",
-        borderBottom: "1px solid var(--border)",
-        position: "sticky",
-        top: 0,
-        zIndex: 30
-      }}>
-        <div style={{
-          maxWidth: 1400,
-          margin: "0 auto",
-          padding: "16px 20px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between"
-        }}>
+      <header
+        style={{
+          background: "var(--card)",
+          borderBottom: "1px solid var(--border)",
+          position: "sticky",
+          top: 0,
+          zIndex: 30,
+        }}
+      >
+        <div
+          style={{
+            maxWidth: 1400,
+            margin: "0 auto",
+            padding: "16px 20px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
           <h1 style={{ fontSize: 20, fontWeight: 700 }}>Marshmallowz</h1>
 
           {/* Desktop Nav */}
@@ -615,12 +807,20 @@ export default function DashboardPage() {
               {Icons.plus}
               <span className="hide">Add Product</span>
             </button>
-            <div className="hide-mobile" style={{ display: "flex", alignItems: "center", gap: 12 }}>
-              <span style={{ fontSize: 14, color: "var(--muted)" }}>Hi, {username}</span>
+            <div
+              className="hide-mobile"
+              style={{ display: "flex", alignItems: "center", gap: 12 }}
+            >
+              <span style={{ fontSize: 14, color: "var(--muted)" }}>
+                Hi, {username}
+              </span>
             </div>
-              <button onClick={handleLogout} className="btn btn-ghost btn-icon-sm">
-                {Icons.logout}
-              </button>
+            <button
+              onClick={handleLogout}
+              className="btn btn-ghost btn-icon-sm"
+            >
+              {Icons.logout}
+            </button>
           </div>
         </div>
       </header>
@@ -648,7 +848,6 @@ export default function DashboardPage() {
             <span>{item.label}</span>
           </button>
         ))}
-     
       </nav>
 
       {/* Modals */}
