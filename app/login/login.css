@@ -1,0 +1,54 @@
+/* app/login/login.css */
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  align-items: center;
+  flex-direction: column;
+  background-color: var(--card);
+}
+
+.branding-section {
+  background-color: var(--muted-light);
+  padding: 48px;
+  display: none; /* Hidden on mobile */
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+@media (min-width: 768px) {
+  .branding-section {
+    display: flex;
+  }
+}
+
+.form-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  background-color: var(--card);
+}
+
+.input-wrapper {
+  gap: 4;
+  display: flex;
+  position: relative;
+}
+
+.input-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  width: 15px;
+  height: 15px;
+}
+
+.input-field {
+  padding-left: 48px !important;
+  height: 52px;
+  font-size: 16px;
+}
