@@ -369,7 +369,7 @@ export default function DashboardPage() {
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                   <span
-                    className={`badge ${product.quantity_in_hand === 0 ? "badge-danger" : "badge-warning"}`}
+                    className={`badge text-nowrap ${product.quantity_in_hand === 0 ? "badge-danger" : "badge-warning"}`}
                   >
                     {product.quantity_in_hand} left
                   </span>
@@ -418,7 +418,10 @@ export default function DashboardPage() {
                     {sale.quantity}x via {sale.platform}
                   </p>
                 </div>
-                <span style={{ fontWeight: 600, color: "var(--success)" }}>
+                <span
+                  style={{ fontWeight: 600, color: "var(--success)" }}
+                  className="text-nowrap"
+                >
                   +Rs. {Math.round(sale.total_price).toLocaleString()}
                 </span>
               </div>
