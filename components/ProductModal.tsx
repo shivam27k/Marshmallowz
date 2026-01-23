@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, JSX } from "react";
 import { Product, ProductInput } from "@/lib/types";
 import { Icons } from "./Icons";
 
@@ -43,10 +43,10 @@ const defaultCategories = [
 ];
 
 const categoryIcons: Record<string, string> = {
-  "Bows": "🎀",
+  Bows: "🎀",
   "Rubber Bands & Hair Ties": "💫",
   "Hair Clips": "📎",
-  "Clutchers": "🦋",
+  Clutchers: "🦋",
   "Other Accessories": "✨",
 };
 
@@ -69,30 +69,43 @@ interface InputFieldProps {
   suffix?: string;
 }
 
-function InputField({ label, value, onChange, type = "text", placeholder, required, prefix, suffix }: InputFieldProps) {
+function InputField({
+  label,
+  value,
+  onChange,
+  type = "text",
+  placeholder,
+  required,
+  prefix,
+  suffix,
+}: InputFieldProps) {
   return (
     <div style={{ marginBottom: 16 }}>
-      <label style={{
-        display: "block",
-        fontSize: 13,
-        fontWeight: 500,
-        color: "var(--muted)",
-        marginBottom: 8,
-        textTransform: "uppercase",
-        letterSpacing: "0.5px"
-      }}>
+      <label
+        style={{
+          display: "block",
+          fontSize: 13,
+          fontWeight: 500,
+          color: "var(--muted)",
+          marginBottom: 8,
+          textTransform: "uppercase",
+          letterSpacing: "0.5px",
+        }}
+      >
         {label}
       </label>
       <div style={{ position: "relative" }}>
         {prefix && (
-          <span style={{
-            position: "absolute",
-            left: 14,
-            top: "50%",
-            transform: "translateY(-50%)",
-            color: "var(--muted)",
-            fontSize: 15
-          }}>
+          <span
+            style={{
+              position: "absolute",
+              left: 14,
+              top: "50%",
+              transform: "translateY(-50%)",
+              color: "var(--muted)",
+              fontSize: 15,
+            }}
+          >
             {prefix}
           </span>
         )}
@@ -109,14 +122,16 @@ function InputField({ label, value, onChange, type = "text", placeholder, requir
           }}
         />
         {suffix && (
-          <span style={{
-            position: "absolute",
-            right: 14,
-            top: "50%",
-            transform: "translateY(-50%)",
-            color: "var(--muted)",
-            fontSize: 14
-          }}>
+          <span
+            style={{
+              position: "absolute",
+              right: 14,
+              top: "50%",
+              transform: "translateY(-50%)",
+              color: "var(--muted)",
+              fontSize: 14,
+            }}
+          >
             {suffix}
           </span>
         )}
@@ -125,7 +140,12 @@ function InputField({ label, value, onChange, type = "text", placeholder, requir
   );
 }
 
-export default function ProductModal({ product, onClose, onSave, existingCategories = [] }: ProductModalProps) {
+export default function ProductModal({
+  product,
+  onClose,
+  onSave,
+  existingCategories = [],
+}: ProductModalProps) {
   const [formData, setFormData] = useState<ProductInput>(emptyProduct);
   const [loading, setSaving] = useState(false);
   const [activeTab, setActiveTab] = useState<TabType>("basic");
@@ -136,8 +156,8 @@ export default function ProductModal({ product, onClose, onSave, existingCategor
   const allCategories = [
     ...defaultCategories,
     ...existingCategories
-      .filter(cat => !defaultCategories.some(dc => dc.id === cat))
-      .map(cat => ({ id: cat, icon: categoryIcons[cat] || "📦" }))
+      .filter((cat) => !defaultCategories.some((dc) => dc.id === cat))
+      .map((cat) => ({ id: cat, icon: categoryIcons[cat] || "📦" })),
   ];
 
   useEffect(() => {
@@ -170,7 +190,10 @@ export default function ProductModal({ product, onClose, onSave, existingCategor
   const handleChange = (field: keyof ProductInput, value: string | number) => {
     setFormData((prev) => ({
       ...prev,
-      [field]: typeof prev[field] === "number" ? parseFloat(value as string) || 0 : value,
+      [field]:
+        typeof prev[field] === "number"
+          ? parseFloat(value as string) || 0
+          : value,
     }));
   };
 
@@ -189,15 +212,21 @@ export default function ProductModal({ product, onClose, onSave, existingCategor
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal modal-lg" onClick={(e) => e.stopPropagation()} style={{ maxWidth: 560 }}>
+      <div
+        className="modal modal-lg"
+        onClick={(e) => e.stopPropagation()}
+        style={{ maxWidth: 560 }}
+      >
         {/* Header */}
-        <div style={{
-          padding: "24px 24px 20px",
-          borderBottom: "1px solid var(--border)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between"
-        }}>
+        <div
+          style={{
+            padding: "24px 24px 20px",
+            borderBottom: "1px solid var(--border)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
           <div>
             <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 4 }}>
               {product ? "Edit Product" : "New Product"}
@@ -220,13 +249,15 @@ export default function ProductModal({ product, onClose, onSave, existingCategor
 
         <form onSubmit={handleSubmit}>
           {/* Tabs */}
-          <div style={{
-            display: "flex",
-            gap: 4,
-            padding: "12px 24px",
-            background: "var(--muted-light)",
-            borderBottom: "1px solid var(--border)"
-          }}>
+          <div
+            style={{
+              display: "flex",
+              gap: 4,
+              padding: "12px 24px",
+              background: "var(--muted-light)",
+              borderBottom: "1px solid var(--border)",
+            }}
+          >
             {tabs.map((tab) => (
               <button
                 key={tab.id}
@@ -245,12 +276,19 @@ export default function ProductModal({ product, onClose, onSave, existingCategor
                   fontSize: 14,
                   fontWeight: 600,
                   transition: "all 0.2s ease",
-                  background: activeTab === tab.id ? "var(--card)" : "transparent",
-                  color: activeTab === tab.id ? "var(--primary)" : "var(--muted)",
-                  boxShadow: activeTab === tab.id ? "0 2px 8px rgba(0,0,0,0.08)" : "none",
+                  background:
+                    activeTab === tab.id ? "var(--card)" : "transparent",
+                  color:
+                    activeTab === tab.id ? "var(--primary)" : "var(--muted)",
+                  boxShadow:
+                    activeTab === tab.id
+                      ? "0 2px 8px rgba(0,0,0,0.08)"
+                      : "none",
                 }}
               >
-                <span style={{ display: "flex", width: 18, height: 18 }}>{tab.icon}</span>
+                <span style={{ display: "flex", width: 18, height: 18 }}>
+                  {tab.icon}
+                </span>
                 <span className="hide-mobile">{tab.label}</span>
               </button>
             ))}
@@ -269,15 +307,17 @@ export default function ProductModal({ product, onClose, onSave, existingCategor
                 />
 
                 <div style={{ marginBottom: 16 }}>
-                  <label style={{
-                    display: "block",
-                    fontSize: 13,
-                    fontWeight: 500,
-                    color: "var(--muted)",
-                    marginBottom: 10,
-                    textTransform: "uppercase",
-                    letterSpacing: "0.5px"
-                  }}>
+                  <label
+                    style={{
+                      display: "block",
+                      fontSize: 13,
+                      fontWeight: 500,
+                      color: "var(--muted)",
+                      marginBottom: 10,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.5px",
+                    }}
+                  >
                     Category
                   </label>
 
@@ -325,15 +365,18 @@ export default function ProductModal({ product, onClose, onSave, existingCategor
                           style={{
                             padding: "10px 16px",
                             borderRadius: 10,
-                            border: formData.category === cat.id
-                              ? "2px solid var(--primary)"
-                              : "1px solid var(--border)",
-                            background: formData.category === cat.id
-                              ? "var(--primary-light)"
-                              : "var(--card)",
-                            color: formData.category === cat.id
-                              ? "var(--primary)"
-                              : "var(--foreground)",
+                            border:
+                              formData.category === cat.id
+                                ? "2px solid var(--primary)"
+                                : "1px solid var(--border)",
+                            background:
+                              formData.category === cat.id
+                                ? "var(--primary-light)"
+                                : "var(--card)",
+                            color:
+                              formData.category === cat.id
+                                ? "var(--primary)"
+                                : "var(--foreground)",
                             cursor: "pointer",
                             fontSize: 14,
                             fontWeight: 500,
@@ -344,7 +387,9 @@ export default function ProductModal({ product, onClose, onSave, existingCategor
                           }}
                         >
                           <span>{cat.icon}</span>
-                          <span style={{ whiteSpace: "nowrap" }}>{cat.id.split(" ")[0]}</span>
+                          <span style={{ whiteSpace: "nowrap" }}>
+                            {cat.id.split(" ")[0]}
+                          </span>
                         </button>
                       ))}
                       <button
@@ -372,7 +417,13 @@ export default function ProductModal({ product, onClose, onSave, existingCategor
                   )}
                 </div>
 
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr",
+                    gap: 16,
+                  }}
+                >
                   <InputField
                     label="S.No"
                     type="number"
@@ -401,22 +452,36 @@ export default function ProductModal({ product, onClose, onSave, existingCategor
 
             {activeTab === "pricing" && (
               <div>
-                <div style={{
-                  background: "var(--primary-light)",
-                  borderRadius: 12,
-                  padding: 16,
-                  marginBottom: 20,
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center"
-                }}>
+                <div
+                  style={{
+                    background: "var(--primary-light)",
+                    borderRadius: 12,
+                    padding: 16,
+                    marginBottom: 20,
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
                   <span style={{ fontWeight: 500 }}>Selling Price</span>
-                  <span style={{ fontSize: 24, fontWeight: 700, color: "var(--primary)" }}>
+                  <span
+                    style={{
+                      fontSize: 24,
+                      fontWeight: 700,
+                      color: "var(--primary)",
+                    }}
+                  >
                     Rs. {formData.selling_price}
                   </span>
                 </div>
 
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr",
+                    gap: 12,
+                  }}
+                >
                   <InputField
                     label="Extra Expenses"
                     type="number"
@@ -475,16 +540,33 @@ export default function ProductModal({ product, onClose, onSave, existingCategor
                   />
                 </div>
 
-                <div style={{
-                  marginTop: 16,
-                  padding: 16,
-                  background: "var(--muted-light)",
-                  borderRadius: 12,
-                }}>
-                  <p style={{ fontSize: 13, fontWeight: 600, color: "var(--muted)", marginBottom: 12, textTransform: "uppercase", letterSpacing: "0.5px" }}>
+                <div
+                  style={{
+                    marginTop: 16,
+                    padding: 16,
+                    background: "var(--muted-light)",
+                    borderRadius: 12,
+                  }}
+                >
+                  <p
+                    style={{
+                      fontSize: 13,
+                      fontWeight: 600,
+                      color: "var(--muted)",
+                      marginBottom: 12,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.5px",
+                    }}
+                  >
                     Stall Pricing
                   </p>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12 }}>
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "1fr 1fr 1fr",
+                      gap: 12,
+                    }}
+                  >
                     <InputField
                       label="SP at Stall"
                       type="number"
@@ -513,20 +595,42 @@ export default function ProductModal({ product, onClose, onSave, existingCategor
 
             {activeTab === "commission" && (
               <div>
-                <p style={{
-                  fontSize: 14,
-                  color: "var(--muted)",
-                  marginBottom: 20,
-                  lineHeight: 1.5
-                }}>
+                <p
+                  style={{
+                    fontSize: 14,
+                    color: "var(--muted)",
+                    marginBottom: 20,
+                    lineHeight: 1.5,
+                  }}
+                >
                   Set commission rates for each selling platform.
                 </p>
 
                 {[
-                  { key: "amazon_commission", name: "Amazon", color: "#FF9900", rate: "14%" },
-                  { key: "flipkart_commission", name: "Flipkart", color: "#2874F0", rate: "20%" },
-                  { key: "meesho_commission", name: "Meesho", color: "#F43397", rate: "0%" },
-                  { key: "instagram_commission", name: "Instagram", color: "#E4405F", rate: "0%" },
+                  {
+                    key: "amazon_commission",
+                    name: "Amazon",
+                    color: "#FF9900",
+                    rate: "14%",
+                  },
+                  {
+                    key: "flipkart_commission",
+                    name: "Flipkart",
+                    color: "#2874F0",
+                    rate: "20%",
+                  },
+                  {
+                    key: "meesho_commission",
+                    name: "Meesho",
+                    color: "#F43397",
+                    rate: "0%",
+                  },
+                  {
+                    key: "instagram_commission",
+                    name: "Instagram",
+                    color: "#E4405F",
+                    rate: "0%",
+                  },
                 ].map((platform) => (
                   <div
                     key={platform.key}
@@ -541,19 +645,23 @@ export default function ProductModal({ product, onClose, onSave, existingCategor
                       marginBottom: 12,
                     }}
                   >
-                    <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                      <div style={{
-                        width: 40,
-                        height: 40,
-                        borderRadius: 10,
-                        background: platform.color + "20",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        fontWeight: 700,
-                        fontSize: 16,
-                        color: platform.color,
-                      }}>
+                    <div
+                      style={{ display: "flex", alignItems: "center", gap: 12 }}
+                    >
+                      <div
+                        style={{
+                          width: 40,
+                          height: 40,
+                          borderRadius: 10,
+                          background: platform.color + "20",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          fontWeight: 700,
+                          fontSize: 16,
+                          color: platform.color,
+                        }}
+                      >
                         {platform.name[0]}
                       </div>
                       <div>
@@ -565,10 +673,16 @@ export default function ProductModal({ product, onClose, onSave, existingCategor
                     </div>
                     <div style={{ width: 100 }}>
                       <input
+                        aria-label="Product"
                         type="number"
                         step="0.01"
                         value={formData[platform.key as keyof ProductInput]}
-                        onChange={(e) => handleChange(platform.key as keyof ProductInput, e.target.value)}
+                        onChange={(e) =>
+                          handleChange(
+                            platform.key as keyof ProductInput,
+                            e.target.value,
+                          )
+                        }
                         style={{
                           textAlign: "center",
                           padding: "10px",
@@ -583,11 +697,13 @@ export default function ProductModal({ product, onClose, onSave, existingCategor
           </div>
 
           {/* Footer */}
-          <div style={{
-            padding: "16px 24px 24px",
-            display: "flex",
-            gap: 12,
-          }}>
+          <div
+            style={{
+              padding: "16px 24px 24px",
+              display: "flex",
+              gap: 12,
+            }}
+          >
             <button
               type="button"
               onClick={onClose}
