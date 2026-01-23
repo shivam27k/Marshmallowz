@@ -95,6 +95,7 @@ export default function StockUpdateModal({ product, onClose, onUpdate }: StockUp
               {mode === "set" ? "New Quantity" : "Quantity"}
             </label>
             <input
+            aria-label="quantity"
               type="number"
               value={adjustment}
               onChange={(e) => setAdjustment(Math.max(0, parseInt(e.target.value) || 0))}

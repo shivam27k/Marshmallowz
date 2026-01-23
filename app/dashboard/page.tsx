@@ -613,14 +613,14 @@ export default function DashboardPage() {
               className="btn btn-primary btn-sm"
             >
               {Icons.plus}
-              <span className="hide-mobile">Add Product</span>
+              <span className="hide">Add Product</span>
             </button>
             <div className="hide-mobile" style={{ display: "flex", alignItems: "center", gap: 12 }}>
               <span style={{ fontSize: 14, color: "var(--muted)" }}>Hi, {username}</span>
+            </div>
               <button onClick={handleLogout} className="btn btn-ghost btn-icon-sm">
                 {Icons.logout}
               </button>
-            </div>
           </div>
         </div>
       </header>
@@ -648,10 +648,7 @@ export default function DashboardPage() {
             <span>{item.label}</span>
           </button>
         ))}
-        <button onClick={handleLogout} className="nav-item">
-          {Icons.logout}
-          <span>Logout</span>
-        </button>
+     
       </nav>
 
       {/* Modals */}
