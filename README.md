@@ -5,9 +5,11 @@ Welcome to the Marshmallowz repository! This project is a Next.js TypeScript app
 ## 🚀 Live Demo
 Check out the live application at [marshmallowz.vercel.app](https://marshmallowz.vercel.app).
 
-Use mock username and password to access the website - 
-username: admin
-password: admin123
+Use mock username and password to access the website: 
+ 
+ username: admin
+ 
+ password: admin123
 
 ## 🛠️ Tech Stack
 - **React**: A JavaScript library for building user interfaces.
