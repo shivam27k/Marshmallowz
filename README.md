@@ -1,51 +1,36 @@
 # Marshmallowz
 
-## Project Description
-Marshmallowz is an innovative project that aims to simplify and enhance your workflow, enabling seamless integration and automation of tasks across various platforms.
+Welcome to the Marshmallowz repository! This project is a Next.js TypeScript application that showcases a modern tech stack. It is designed to provide an efficient and enjoyable user experience.
 
-## Installation Instructions
-To set up Marshmallowz on your local machine, follow these steps:
+## 🚀 Live Demo
+Check out the live application at [marshmallowz.vercel.app](https://marshmallowz.vercel.app).
+
+## 🛠️ Tech Stack
+- **React**: A JavaScript library for building user interfaces.
+- **Next.js**: A React framework for server-rendered applications.
+- **TypeScript**: A superset of JavaScript that adds static types.
+- **ESLint**: A static code analysis tool to identify problematic patterns in JavaScript code.
+- **PostCSS**: A tool for transforming CSS with JavaScript plugins.
+
+## 📁 Getting Started
+To get started with this project, follow these instructions:
 
 1. Clone the repository:
    ```bash
    git clone https://github.com/shivam27k/Marshmallowz.git
-   ```
-2. Navigate to the project directory:
-   ```bash
    cd Marshmallowz
    ```
-3. Install the required dependencies:
+2. Install the dependencies:
    ```bash
    npm install
    ```
-
-## Features
-- User-friendly interface
-- Integration with multiple platforms
-- Real-time data sync
-- Customizable workflows
-
-## Tech Stack
-- JavaScript
-- Node.js
-- Express
-- MongoDB
-- React
-
-## How to Contribute
-We welcome contributions from the community! If you'd like to contribute, please follow these steps:
-
-1. Fork the repository.
-2. Create a new branch for your feature or fix:
+3. Start the development server:
    ```bash
-   git checkout -b feature/YourFeatureName
+   npm run dev
    ```
-3. Commit your changes:
-   ```bash
-   git commit -m 'Add some feature'
-   ```
-4. Push to the branch:
-   ```bash
-   git push origin feature/YourFeatureName
-   ```
-5. Open a pull request.
+
+## 📫 Contact
+For any inquiries, please reach out to me on GitHub: [shivam27k](https://github.com/shivam27k).
+
+## 📅 Last Updated
+This README was last updated on 2026-02-19 21:24:52 UTC.
